@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    .container {
+      padding: 20px;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .product {
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .product h3 {
+      margin-top: 0;
+    }
+    .product button {
+      padding: 8px 12px;
+      background: #111;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .box {
+      background: #fff;
+      padding: 20px;
+      margin-top: 30px;
+      border-radius: 5px;
+    }
+    footer {
+      background: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 10px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Simple Shop</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#login">Login</a>
+    <a href="#search">Search</a>
+  </nav>
+</header>
+
+<div class="container">
+
+  <h2>Products</h2>
+  <div class="products">
+    <div class="product">
+      <h3>T‑Shirt</h3>
+      <p>Price: $10</p>
+      <button onclick="addToCart('T-Shirt')">Add to Cart</button>
+    </div>
+    <div class="product">
+      <h3>Cooking Pot</h3>
+      <p>Price: $25</p>
+      <button onclick="addToCart('Cooking Pot')">Add to Cart</button>
+    </div>
+    <div class="product">
+      <h3>Plate Set</h3>
+      <p>Price: $15</p>
+      <button onclick="addToCart('Plate Set')">Add to Cart</button>
+    </div>
+  </div>
+
+  <!-- LOGIN (INTENTIONALLY INSECURE) -->
+  <div class="box" id="login">
+    <h2>Login</h2>
+    <form onsubmit="login(); return false;">
+      <input type="text" id="username" placeholder="Username"><br><br>
+      <input type="password" id="password" placeholder="Password"><br><br>
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginResult"></p>
+  </div>
+
+  <!-- SEARCH (XSS PRACTICE) -->
+  <div class="box" id="search">
+    <h2>Search Products</h2>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button onclick="search()">Search</button>
+    <p>Results:</p>
+    <div id="searchResult"></div>
+  </div>
+
+</div>
+
+<footer>
+  <p>Practice Ecommerce Site – Local Testing Only</p>
+</footer>
+
+<script>
+  // Insecure cart function
+  function addToCart(item) {
+    alert(item + " added to cart");
+  }
+
+  // Insecure login (logic flaw)
+  function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
+
+    // INTENTIONALLY WEAK CHECK
+    if (user == 'admin' || pass == 'admin') {
+      document.getElementById('loginResult').innerHTML = "Welcome " + user;
+    } else {
+      document.getElementById('loginResult').innerHTML = "Invalid login";
+    }
+  }
+
+  // INTENTIONALLY VULNERABLE TO XSS
+  function search() {
+    const q = document.getElementById('searchInput').value;
+    document.getElementById('searchResult').innerHTML = q;
+  }
+</script>
+
+</body>
+</html>
